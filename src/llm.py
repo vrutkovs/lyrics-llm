@@ -3,6 +3,7 @@ import streamlit as st
 from llama_index.core import VectorStoreIndex
 from llama_index.core import Settings
 from llama_index.core import SimpleDirectoryReader
+from llama_index.core.chat_engine.types import ChatMode
 
 # TODO: Import if vLLM env var not set
 from llama_index.llms.ollama import Ollama
@@ -16,4 +17,4 @@ def load_llm():
         reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
         docs = reader.load_data()
         index = VectorStoreIndex.from_documents(docs)
-        return index
+        return index.as_chat_engine(ChatMode.CONTEXT)
