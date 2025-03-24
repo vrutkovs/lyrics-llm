@@ -2,7 +2,7 @@ from llama_index.core.chat_engine.types import ChatMode
 import random
 import streamlit as st
 import llm
-import github
+import gh
 
 if "messages" not in st.session_state.keys():
     st.session_state.messages = [
@@ -15,11 +15,12 @@ is_first_message = len(st.session_state.messages) == 1
 st.header("PTAL Generator")
 prompt = ""
 index = llm.load_llm()
-chat_engine = index.as_chat_engine(ChatMode.CONDENSE_PLUS_CONTEXT, verbose=True)
+chat_engine = index.as_chat_engine(ChatMode.CONDENSE_PLUS_CONTEXT)
 
 if user_input := st.chat_input(key="user_input", placeholder="Send message"):
     if is_first_message:
-        prompt = github.get_prompt(user_input)
+        with st.spinner("Fetching github pull request details"):
+            prompt = gh.get_prompt(user_input)
     else:
         prompt = str(user_input)
     st.session_state.messages.append(
