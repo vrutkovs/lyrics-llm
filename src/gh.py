@@ -10,17 +10,6 @@ if token is None:
     raise ValueError("GITHUB_ACCESS_TOKEN environment variable is not set")
 g = Github(auth=Auth.Token(token))
 
-prompt_template = '''
-Create a poem about a request for review of pull request.
-This is a PR for {github_pr.organization} organization in {github_pr.repository} repository.
-Title of the PR is "{github_pr.title}".
-
-The poem must not exceed 4 lines. Each line should have a maximum of 10 words. Each line should start with a capital letter and end with a period.
-Each line should be separated by double line break. Poem should be creative and engaging.
-
-The poem must end with links to "{pull_request_url}" and "{github_pr.ticket_url}"
-'''
-
 class GithubPullRequestInfo:
     title = ""
     organization = ""
@@ -67,12 +56,3 @@ class GithubPullRequestInfo:
 def fetch_pull_request_info(url):
     # TODO: Validate URL
     return GithubPullRequestInfo(url)
-
-
-@st.cache_data(show_spinner=False)
-def get_prompt(url):
-    github_pr = fetch_pull_request_info(url)
-    return prompt_template.format(
-        pull_request_url=url,
-        github_pr=github_pr,
-    )

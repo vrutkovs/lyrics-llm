@@ -4,6 +4,17 @@ import streamlit as st
 import llm
 import gh
 
+prompt_template = '''
+Create a poem in the style of Bob Marley about a request for review of pull request.
+This is a PR for {github_pr.organization} organization in {github_pr.repository} repository.
+Title of the PR is "{github_pr.title}".
+
+The poem must not exceed 4 lines. Each line should have a maximum of 10 words. Each line should start with a capital letter and end with a period.
+Each line should be separated by double line break. Poem should be creative and engaging.
+
+The poem must end with links to "{pull_request_url}" and "{github_pr.ticket_url}"
+'''
+
 if "messages" not in st.session_state.keys():
     st.session_state.messages = [
         {
@@ -15,12 +26,20 @@ is_first_message = len(st.session_state.messages) == 1
 st.header("PTAL Generator")
 prompt = ""
 index = llm.load_llm()
-chat_engine = index.as_chat_engine(ChatMode.CONDENSE_PLUS_CONTEXT)
+chat_engine = index.as_chat_engine(ChatMode.CONTEXT)
+
+@st.cache_data(show_spinner=False)
+def get_prompt(url):
+    github_pr = gh.fetch_pull_request_info(url)
+    return prompt_template.format(
+        pull_request_url=url,
+        github_pr=github_pr,
+    )
 
 if user_input := st.chat_input(key="user_input", placeholder="Send message"):
     if is_first_message:
         with st.spinner("Fetching github pull request details"):
-            prompt = gh.get_prompt(user_input)
+            prompt = get_prompt(user_input)
     else:
         prompt = str(user_input)
     st.session_state.messages.append(
