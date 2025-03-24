@@ -806,19 +806,6 @@ wheels = [
 ]
 
 [[package]]
-name = "llama-index-readers-genius"
-version = "0.3.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "llama-index-core" },
-    { name = "lyricsgenius" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/4d/4b/4e2b9104172c49df535d30b13c579d3dc0f198e8557a2c4d4cdc94607471/llama_index_readers_genius-0.3.0.tar.gz", hash = "sha256:262294060c83eee82096b1294ac8c954af5cd2baf500dfcadd716aca66e209be", size = 3739 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/df/1c/4bacf2e028b18106e2b51492cfd560922b9fd2a3c73b4f50e9a3a7b5ba6a/llama_index_readers_genius-0.3.0-py3-none-any.whl", hash = "sha256:1a67a52534da64dde399850307918936db1a6115744c9dace839c1c8eca1f0a5", size = 4115 },
-]
-
-[[package]]
 name = "llama-index-readers-llama-parse"
 version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -851,7 +838,7 @@ dependencies = [
     { name = "llama-index" },
     { name = "llama-index-embeddings-ollama" },
     { name = "llama-index-llms-ollama" },
-    { name = "llama-index-readers-genius" },
+    { name = "lyricsgenius" },
     { name = "nltk" },
     { name = "pygithub" },
     { name = "python-dotenv" },
@@ -863,7 +850,7 @@ requires-dist = [
     { name = "llama-index", specifier = "==0.12.25" },
     { name = "llama-index-embeddings-ollama", specifier = "==0.6.0" },
     { name = "llama-index-llms-ollama", specifier = "==0.5.3" },
-    { name = "llama-index-readers-genius", specifier = "==0.3.0" },
+    { name = "lyricsgenius", specifier = "==3.3.1" },
     { name = "nltk", specifier = "==3.9.1" },
     { name = "pygithub", specifier = "==2.6.1" },
     { name = "python-dotenv", specifier = "==1.0.1" },

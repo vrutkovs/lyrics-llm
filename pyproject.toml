@@ -7,8 +7,8 @@ dependencies = [
     "llama-index==0.12.25",
     "llama-index-llms-ollama==0.5.3",
     "llama-index-embeddings-ollama==0.6.0",
-    "llama-index-readers-genius==0.3.0",
     "nltk==3.9.1",
     "PyGithub==2.6.1",
     "python-dotenv==1.0.1",
+    "lyricsgenius==3.3.1",
 ]

@@ -2,6 +2,7 @@ import random
 import streamlit as st
 import llm
 import gh
+import tempfile
 
 prompt_template = '''
 Create a poem in the style of {artist} about a request for review of pull request.
@@ -51,30 +52,30 @@ if not st.session_state.is_initialized:
             st.session_state.messages = []
 
 if st.session_state.is_initialized:
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        chat_engine = llm.load_llm(st.session_state.artist, tmpdirname)
 
-    chat_engine = llm.load_llm(artist=st.session_state.artist)
+        if not st.session_state.poem_generated:
+            with st.spinner("Fetching github pull request details"):
+                prompt = get_prompt(
+                    url=st.session_state.pull_request_url,
+                    artist=st.session_state.artist)
+                st.session_state.messages.append({"role": "user", "content": prompt})
+            st.session_state.poem_generated = True
 
-    if not st.session_state.poem_generated:
-        with st.spinner("Fetching github pull request details"):
-            prompt = get_prompt(
-                url=st.session_state.pull_request_url,
-                artist=st.session_state.artist)
+        if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
             st.session_state.messages.append({"role": "user", "content": prompt})
-        st.session_state.poem_generated = True
 
-    if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
+        for message in st.session_state.messages: # Display the prior chat messages
+            with st.chat_message(message["role"]):
+                st.write(message["content"])
 
-    for message in st.session_state.messages: # Display the prior chat messages
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-
-    # If last message is not from assistant, generate a new response
-    last_message = st.session_state.messages[-1]
-    if last_message["role"] != "assistant":
-        with st.chat_message("assistant"):
-            with st.spinner(get_spinner_text()):
-                response = chat_engine.chat(last_message["content"])
-                st.write(response.response)
-                message = {"role": "assistant", "content": response.response}
-                st.session_state.messages.append(message) # Add response to message history
+        # If last message is not from assistant, generate a new response
+        last_message = st.session_state.messages[-1]
+        if last_message["role"] != "assistant":
+            with st.chat_message("assistant"):
+                with st.spinner(get_spinner_text()):
+                    response = chat_engine.chat(last_message["content"])
+                    st.write(response.response)
+                    message = {"role": "assistant", "content": response.response}
+                    st.session_state.messages.append(message) # Add response to message history
