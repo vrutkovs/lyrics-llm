@@ -37,7 +37,6 @@ def get_spinner_text():
 st.session_state.is_initialized = "messages" in st.session_state.keys()
 
 st.header("PTAL Generator")
-chat_engine = llm.load_llm()
 
 if not st.session_state.is_initialized:
     with st.form("input_form"):
@@ -52,6 +51,9 @@ if not st.session_state.is_initialized:
             st.session_state.messages = []
 
 if st.session_state.is_initialized:
+
+    chat_engine = llm.load_llm(artist=st.session_state.artist)
+
     if not st.session_state.poem_generated:
         with st.spinner("Fetching github pull request details"):
             prompt = get_prompt(
