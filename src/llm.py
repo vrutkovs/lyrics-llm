@@ -14,9 +14,7 @@ import genius
 from dotenv import load_dotenv
 
 load_dotenv()
-MODEL_NAME = os.getenv("MODEL_NAME")
-if MODEL_NAME is None:
-    MODEL_NAME = "llama3.2"
+MODEL_NAME = os.getenv("MODEL_NAME") or "llama3.2"
 
 
 @st.cache_resource(show_spinner=False)

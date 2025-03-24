@@ -10,9 +10,7 @@ if token is None:
     raise ValueError("GENIUS_ACCESS_TOKEN environment variable is not set")
 genius = lyricsgenius.Genius(token)
 
-MAX_SONGS = os.getenv("MAX_SONGS")
-if MAX_SONGS is None:
-    MAX_SONGS = 10
+MAX_SONGS = os.getenv("MAX_SONGS") or 10
 
 
 def get_artist_songs(artist_name):
