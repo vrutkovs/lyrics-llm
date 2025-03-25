@@ -1,5 +1,6 @@
-from re import L
+import requests
 import streamlit as st
+import uuid
 
 import os
 from dotenv import load_dotenv
@@ -10,7 +11,6 @@ token = os.getenv("GENIUS_ACCESS_TOKEN")
 if token is None:
     raise ValueError("GENIUS_ACCESS_TOKEN environment variable is not set")
 genius = lyricsgenius.API(token)
-publicgenius = lyricsgenius.Genius(token)
 
 MAX_SONGS = os.getenv("MAX_SONGS") or 10
 
@@ -25,10 +25,13 @@ def get_artist_songs(artist_name):
 
 
 def write_lyrics(song_names, artist, tmpdirname):
-    for song_name in song_names:
-        with st.spinner(text=f"Fetching lyrics for {artist} - {song_name}", show_time=True):
-            song = publicgenius.search_song(title=song_name, artist=artist)
-            if song is None:
+    with st.spinner(text=f"Fetching lyrics for {artist}", show_time=True):
+        for song_name in song_names:
+            response = requests.get(f"https://api.lyrics.ovh/v1/{artist}/{song_name}")
+            try:
+                lyrics = response.json()["lyrics"]
+                with open(f"{tmpdirname}/{ uuid.uuid4()}.txt", "w") as f:
+                    f.write(lyrics)
+            except Exception:
+                # st.error(f"Error fetching lyrics for {artist} - {song_name}: {response.text}")
                 continue
-            filename = f"{tmpdirname}/{song.id}.txt"
-            song.save_lyrics(filename, extension="txt", overwrite=True, sanitize=False)
