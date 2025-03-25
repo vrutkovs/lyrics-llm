@@ -44,9 +44,8 @@ def load_llm(artist, tmpdirname):
         Settings.embed_model = embedding
     docs = []
     song_names = genius.get_artist_songs(artist)
-    with st.spinner(text=f"Fetching {artist} lyrics"):
-        genius.write_lyrics(song_names, artist, tmpdirname)
-    with st.spinner(text=f"Loading {artist} lyrics in LLM"):
+    genius.write_lyrics(song_names, artist, tmpdirname)
+    with st.spinner(text=f"Loading {artist} lyrics in LLM", show_time=True):
         reader = SimpleDirectoryReader(input_dir=tmpdirname, recursive=True)
         docs = reader.load_data()
     with st.spinner(text=f"Indexing {len(docs)} songs"):
