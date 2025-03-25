@@ -39,6 +39,8 @@ st.session_state.is_initialized = "messages" in st.session_state.keys()
 
 st.header("PTAL Generator")
 
+st.write("This bot will generate a poem to draw attention to a Github pull request review in the style of selected music artist")
+
 if not st.session_state.is_initialized:
     with st.form("input_form"):
         pull_request_url = st.text_input("Github PR link")
