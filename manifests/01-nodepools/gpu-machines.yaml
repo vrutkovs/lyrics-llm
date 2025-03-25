@@ -1,7 +1,7 @@
 apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
-  name: vrutkovs-9zbw4-worker-us-east-2a
+  name: vrutkovs-5hgc7-worker-us-east-2a
   namespace: openshift-machine-api
   annotations:
     argocd.argoproj.io/sync-wave: "2"
