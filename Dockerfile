@@ -7,7 +7,7 @@ WORKDIR /app
 COPY uv.lock pyproject.toml /app/
 USER root
 RUN uv sync --frozen --no-install-project --no-dev
-COPY .env src /app
+COPY src /app
 RUN uv sync --frozen --no-dev
 
 FROM base
