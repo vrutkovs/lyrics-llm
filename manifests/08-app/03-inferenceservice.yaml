@@ -24,12 +24,12 @@ spec:
       name: ""
       resources:
         limits:
-          cpu: "2"
-          memory: 8Gi
+          cpu: "10"
+          memory: 20Gi
           nvidia.com/gpu: "1"
         requests:
-          cpu: "1"
-          memory: 4Gi
+          cpu: "6"
+          memory: 16Gi
           nvidia.com/gpu: "1"
       runtime: granite
       storageUri: "oci://quay.io/redhat-ai-services/modelcar-catalog:granite-3.2-8b-instruct"
@@ -37,3 +37,7 @@ spec:
       - effect: NoSchedule
         key: nvidia.com/gpu
         operator: Exists
+      - key: "node-role.kubernetes.io/gpu"
+        operator: "Equal"
+        value: "reserved"
+        effect: "NoSchedule"

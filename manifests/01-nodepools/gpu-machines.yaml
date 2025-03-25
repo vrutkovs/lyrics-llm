@@ -18,3 +18,7 @@ spec:
         value:
           spotMarketOptions: {}
           instanceType: g5.2xlarge
+      taints:
+        - key: node-role.kubernetes.io/gpu
+          effect: NoSchedule
+          value: reserved
