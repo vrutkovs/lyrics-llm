@@ -16,4 +16,5 @@ spec:
           node-role.kubernetes.io/gpu: ""
       providerSpec:
         value:
+          spotMarketOptions: {}
           instanceType: g5.2xlarge
