@@ -19,17 +19,19 @@ spec:
     maxReplicas: 1
     minReplicas: 1
     model:
+      args:
+        - "--max-model-len=4096"
       modelFormat:
         name: vLLM
       name: ""
       resources:
         limits:
           cpu: "10"
-          memory: 20Gi
+          memory: 30Gi
           nvidia.com/gpu: "1"
         requests:
           cpu: "6"
-          memory: 16Gi
+          memory: 24Gi
           nvidia.com/gpu: "1"
       runtime: granite
       storageUri: "oci://quay.io/redhat-ai-services/modelcar-catalog:granite-3.2-8b-instruct"
