@@ -20,7 +20,7 @@ spec:
     minReplicas: 1
     model:
       args:
-        - "--max-model-len=4096"
+        - "--max-model-len=8192"
       modelFormat:
         name: vLLM
       name: ""
