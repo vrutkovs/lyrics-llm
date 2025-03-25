@@ -1,0 +1,8 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: settings
+  namespace: ptal-generator
+data:
+  .env:
+type: Opaque

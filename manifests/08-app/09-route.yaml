@@ -1,0 +1,30 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: lyrics-llm
+  namespace: ptal-generator
+  labels:
+    app: lyrics-llm
+    app.kubernetes.io/component: lyrics-llm
+    app.kubernetes.io/instance: lyrics-llm
+    app.kubernetes.io/name: lyrics-llm
+    app.kubernetes.io/part-of: lyrics-llm-app
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: 3.12-ubi8
+  annotations:
+    app.openshift.io/vcs-ref: ""
+    app.openshift.io/vcs-uri: "https://github.com/vrutkovs/lyrics-llm"
+    openshift.io/generated-by: OpenShiftWebConsole
+    openshift.io/host.generated: "true"
+spec:
+  host: lyrics-llm-ptal-generator.apps.vrutkovs.devcluster.openshift.com
+  to:
+    kind: Service
+    name: lyrics-llm
+    weight: 100
+  port:
+    targetPort: main
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

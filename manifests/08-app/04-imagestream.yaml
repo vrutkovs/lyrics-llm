@@ -1,0 +1,19 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: ""
+    app.openshift.io/vcs-uri: "https://github.com/vrutkovs/lyrics-llm"
+  name: lyrics-llm
+  namespace: ptal-generator
+  labels:
+    app: lyrics-llm
+    app.kubernetes.io/component: lyrics-llm
+    app.kubernetes.io/instance: lyrics-llm
+    app.kubernetes.io/name: lyrics-llm
+    app.kubernetes.io/part-of: lyrics-llm-app
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: 3.12-ubi8
+spec:
+  lookupPolicy:
+    local: false

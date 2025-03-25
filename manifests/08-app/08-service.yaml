@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: lyrics-llm
+  namespace: ptal-generator
+  labels:
+    app: lyrics-llm
+    app.kubernetes.io/component: lyrics-llm
+    app.kubernetes.io/instance: lyrics-llm
+    app.kubernetes.io/name: lyrics-llm
+    app.kubernetes.io/part-of: lyrics-llm-app
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: 3.12-ubi8
+  annotations:
+    app.openshift.io/vcs-ref: ""
+    app.openshift.io/vcs-uri: "https://github.com/vrutkovs/lyrics-llm"
+    openshift.io/generated-by: OpenShiftWebConsole
+spec:
+  clusterIP: 172.30.205.105
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: main
+      protocol: TCP
+      port: 8501
+      targetPort: 8501
+  internalTrafficPolicy: Cluster
+  clusterIPs:
+    - 172.30.205.105
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: lyrics-llm
+    deployment: lyrics-llm
