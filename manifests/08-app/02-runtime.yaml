@@ -1,39 +1,47 @@
-apiVersion: serving.kserve.io/v1beta1
-kind: InferenceService
+apiVersion: serving.kserve.io/v1alpha1
+kind: ServingRuntime
 metadata:
   annotations:
+    opendatahub.io/accelerator-name: migrated-gpu
+    opendatahub.io/apiProtocol: REST
+    opendatahub.io/recommended-accelerators: '["nvidia.com/gpu"]'
+    opendatahub.io/template-display-name: vLLM ServingRuntime for KServe
+    opendatahub.io/template-name: vllm-runtime
     openshift.io/display-name: granite
-    security.opendatahub.io/enable-auth: "true"
-    serving.knative.openshift.io/enablePassthrough: "true"
-    serving.kserve.io/deploymentMode: Serverless
-    sidecar.istio.io/inject: "true"
-    sidecar.istio.io/rewriteAppHTTPProbers: "true"
   name: granite
   namespace: ptal-generator
   labels:
     opendatahub.io/dashboard: "true"
 spec:
-  predictor:
-    annotations:
-      serving.knative.dev/progress-deadline: 30m
-    maxReplicas: 1
-    minReplicas: 1
-    model:
-      modelFormat:
-        name: vLLM
-      name: ""
-      resources:
-        limits:
-          cpu: "2"
-          memory: 8Gi
-          nvidia.com/gpu: "1"
-        requests:
-          cpu: "1"
-          memory: 4Gi
-          nvidia.com/gpu: "1"
-      runtime: granite
-      storageUri: "oci://quay.io/redhat-ai-services/modelcar-catalog:granite-3.2-8b-instruct"
-    tolerations:
-      - effect: NoSchedule
-        key: nvidia.com/gpu
-        operator: Exists
+  annotations:
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8080"
+  containers:
+    - args:
+        - "--port=8080"
+        - "--model=/mnt/models"
+        - "--served-model-name={{.Name}}"
+      command:
+        - python
+        - "-m"
+        - vllm.entrypoints.openai.api_server
+      env:
+        - name: HF_HOME
+          value: /tmp/hf_home
+      image: "quay.io/modh/vllm@sha256:4f1f6b5738b311332b2bc786ea71259872e570081807592d97b4bd4cb65c4be1"
+      name: kserve-container
+      ports:
+        - containerPort: 8080
+          protocol: TCP
+      volumeMounts:
+        - mountPath: /dev/shm
+          name: shm
+  multiModel: false
+  supportedModelFormats:
+    - autoSelect: true
+      name: vLLM
+  volumes:
+    - emptyDir:
+        medium: Memory
+        sizeLimit: 2Gi
+      name: shm
