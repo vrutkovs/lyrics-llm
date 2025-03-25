@@ -2,13 +2,13 @@ apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
   annotations:
-    openshift.io/display-name: mistral
+    openshift.io/display-name: granite
     security.opendatahub.io/enable-auth: "true"
     serving.knative.openshift.io/enablePassthrough: "true"
     serving.kserve.io/deploymentMode: Serverless
     sidecar.istio.io/inject: "true"
     sidecar.istio.io/rewriteAppHTTPProbers: "true"
-  name: mistral
+  name: granite
   namespace: ptal-generator
   labels:
     opendatahub.io/dashboard: "true"
@@ -31,7 +31,7 @@ spec:
           cpu: "1"
           memory: 4Gi
           nvidia.com/gpu: "1"
-      runtime: mistral
+      runtime: granite
       storageUri: "oci://quay.io/redhat-ai-services/modelcar-catalog:granite-3.2-8b-instruct"
     tolerations:
       - effect: NoSchedule
