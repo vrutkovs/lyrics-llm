@@ -32,6 +32,7 @@ def write_lyrics(song_names, artist, tmpdirname):
                 lyrics = response.json()["lyrics"]
                 with open(f"{tmpdirname}/{ uuid.uuid4()}.txt", "w") as f:
                     f.write(lyrics)
+                st.success(f"Successfully fetched lyrics for {artist} - {song_name}")
             except Exception:
                 # st.error(f"Error fetching lyrics for {artist} - {song_name}: {response.text}")
                 continue
