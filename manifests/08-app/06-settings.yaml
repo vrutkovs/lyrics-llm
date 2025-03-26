@@ -3,6 +3,12 @@ apiVersion: v1
 metadata:
   name: settings
   namespace: ptal-generator
-data:
-  .env:
+stringData:
+  .env: |
+    GITHUB_ACCESS_TOKEN = ""
+    GENIUS_ACCESS_TOKEN = ""
+    MAX_SONGS = 5
+    VLLM_TOKEN = ""
+    VLLM_ENDPOINT = ""
+    VLLM_MODEL = "granite"
 type: Opaque
